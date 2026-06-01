@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Create Group</h2>
+
+<form method="POST">
+
+    <input
+        class="form-control mb-2"
+        type="text"
+        name="group_name"
+        placeholder="Group Name">
+
+    <button
+        class="btn btn-success">
+        Create Group
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Your Groups</h3>
+
+<ul class="list-group">
+
+{% for group in groups %}
+
+<li class="list-group-item">
+
+    {{ group.name }}
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% endblock %}

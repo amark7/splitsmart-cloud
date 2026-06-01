@@ -10,7 +10,7 @@ login_manager.login_view = "login"
 
 # Temporary user storage
 users = {}
-
+groups = []
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
@@ -64,5 +64,23 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/groups', methods=['GET', 'POST'])
+@login_required
+def groups_page():
+
+    if request.method == 'POST':
+
+        group_name = request.form['group_name']
+
+        groups.append({
+            'name': group_name,
+            'owner': current_user.id,
+            'members': [current_user.id]
+        })
+
+    return render_template(
+        'groups.html',
+        groups=groups
+    )
 if __name__ == '__main__':
     app.run(debug=True)
