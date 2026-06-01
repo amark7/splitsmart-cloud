@@ -11,6 +11,7 @@ login_manager.login_view = "login"
 # Temporary user storage
 users = {}
 groups = []
+expenses = []
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
@@ -81,6 +82,31 @@ def groups_page():
     return render_template(
         'groups.html',
         groups=groups
+    )
+
+@app.route('/expenses', methods=['GET', 'POST'])
+@login_required
+def expenses_page():
+
+    if request.method == 'POST':
+
+        amount = request.form['amount']
+        description = request.form['description']
+        paid_by = request.form['paid_by']
+
+        participants = request.form.getlist('participants')
+
+        expenses.append({
+            'amount': amount,
+            'description': description,
+            'paid_by': paid_by,
+            'participants': participants
+        })
+
+    return render_template(
+        'expenses.html',
+        expenses=expenses,
+        current_user=current_user.id
     )
 if __name__ == '__main__':
     app.run(debug=True)

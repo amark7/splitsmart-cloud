@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Add Expense</h2>
+
+<form method="POST">
+
+    <input
+        class="form-control mb-2"
+        type="number"
+        name="amount"
+        placeholder="Amount">
+
+    <input
+        class="form-control mb-2"
+        type="text"
+        name="description"
+        placeholder="Description">
+
+    <input
+        class="form-control mb-2"
+        type="text"
+        name="paid_by"
+        value="{{ current_user }}">
+
+    <h5>Participants</h5>
+
+    <div class="form-check">
+
+        <input
+            class="form-check-input"
+            type="checkbox"
+            name="participants"
+            value="{{ current_user }}"
+            checked>
+
+        <label class="form-check-label">
+            {{ current_user }}
+        </label>
+
+    </div>
+
+    <button
+        class="btn btn-success mt-3">
+        Add Expense
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Expense History</h3>
+
+{% for expense in expenses %}
+
+<div class="card mb-2">
+
+    <div class="card-body">
+
+        <strong>
+            ₹{{ expense.amount }}
+        </strong>
+
+        <br>
+
+        {{ expense.description }}
+
+        <br>
+
+        Paid By:
+        {{ expense.paid_by }}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
