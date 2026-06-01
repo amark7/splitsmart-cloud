@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Settlement Summary</h2>
+
+<ul class="list-group">
+
+{% for item in settlements %}
+
+<li class="list-group-item">
+
+    {{ item }}
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% endblock %}

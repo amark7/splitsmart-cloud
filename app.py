@@ -20,8 +20,31 @@ class User(UserMixin):
 def load_user(user_id):
     if user_id in users:
         return User(user_id)
-    return None
+    return None 
 
+def calculate_settlements():
+
+    settlements = []
+
+    for expense in expenses:
+
+        amount = float(expense['amount'])
+
+        paid_by = expense['paid_by']
+
+        participants = expense['participants']
+
+        share = amount / len(participants)
+
+        for person in participants:
+
+            if person != paid_by:
+
+                settlements.append(
+                    f"{person} owes {paid_by} ₹{share:.2f}"
+                )
+
+    return settlements
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -107,6 +130,34 @@ def expenses_page():
         'expenses.html',
         expenses=expenses,
         current_user=current_user.id
+    )
+
+@app.route('/settlements')
+@login_required
+def settlements_page():
+
+    settlements = calculate_settlements()
+
+    return render_template(
+        'settlements.html',
+        settlements=settlements
+    )
+@app.route('/group/<int:group_id>', methods=['GET', 'POST'])
+@login_required
+def group_details(group_id):
+
+    group = groups[group_id]
+
+    if request.method == 'POST':
+
+        member_name = request.form['member_name']
+
+        group['members'].append(member_name)
+
+    return render_template(
+        'group_details.html',
+        group=group,
+        group_id=group_id
     )
 if __name__ == '__main__':
     app.run(debug=True)
